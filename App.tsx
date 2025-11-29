@@ -7,25 +7,42 @@ import Terminal from './components/Terminal';
 import TaskManager from './components/TaskManager';
 
 const App: React.FC = () => {
-  const [hasEntered, setHasEntered] = useState(false);
+  const [showIntro, setShowIntro] = useState(true);
   const [showTerminal, setShowTerminal] = useState(false);
   const [showTaskManager, setShowTaskManager] = useState(false);
+  const [isHackerMode, setIsHackerMode] = useState(false);
+
+  const handleReset = () => {
+    setShowIntro(true);
+    // Optional: Reset hacker mode on exit, or keep it persistent. 
+    // Resetting gives a fresh start feel.
+    setIsHackerMode(false); 
+    setShowTerminal(false);
+    setShowTaskManager(false);
+  };
 
   return (
-    <div className="relative min-h-screen w-full overflow-hidden text-slate-100 font-sans selection:bg-neon-purple selection:text-white">
+    <div className={`relative min-h-screen w-full overflow-hidden font-sans selection:bg-neon-purple selection:text-white ${isHackerMode ? 'text-green-500' : 'text-slate-100'}`}>
+      
       <Background />
       
       <AnimatePresence mode="wait">
-        {!hasEntered ? (
+        {showIntro ? (
           <Intro 
             key="intro" 
-            onPlay={() => setHasEntered(true)} 
+            onStart={() => setShowIntro(false)} 
             onOpenTerminal={() => setShowTerminal(true)}
+            onEnableHackerMode={() => {
+              setIsHackerMode(true);
+              setShowIntro(false);
+            }}
           />
         ) : (
           <Portfolio 
             key="portfolio" 
-            onOpenTaskManager={() => setShowTaskManager(!showTaskManager)} 
+            onOpenTaskManager={() => setShowTaskManager(!showTaskManager)}
+            isHackerMode={isHackerMode}
+            onReset={handleReset}
           />
         )}
       </AnimatePresence>
@@ -44,7 +61,7 @@ const App: React.FC = () => {
       
       {/* Visual Overlay Effects */}
       <div className="scanlines" />
-      <div className="fixed inset-0 pointer-events-none bg-gradient-to-t from-neon-bg via-transparent to-transparent z-40 opacity-40" />
+      <div className={`fixed inset-0 pointer-events-none bg-gradient-to-t z-40 opacity-40 ${isHackerMode ? 'from-green-900/20 via-transparent' : 'from-neon-bg via-transparent to-transparent'}`} />
     </div>
   );
 };

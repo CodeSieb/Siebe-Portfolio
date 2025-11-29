@@ -64,9 +64,13 @@ const Projects: React.FC = () => {
                 <Folder className="w-6 h-6" />
               </div>
               <div className="flex gap-2">
-                <button className="p-2 hover:bg-white/10 rounded-full transition-colors" title="View Code">
-                    <Github className="w-5 h-5 text-slate-400 hover:text-white" />
-                </button>
+                {/* Only show GitHub icon for projects that aren't the specific private web apps */}
+                {!['public-1', 'public-2'].includes(project.id) && (
+                    <button className="p-2 hover:bg-white/10 rounded-full transition-colors" title="View Code">
+                        <Github className="w-5 h-5 text-slate-400 hover:text-white" />
+                    </button>
+                )}
+                
                 {project.link && (
                     <a 
                       href={project.link}
@@ -75,7 +79,8 @@ const Projects: React.FC = () => {
                       className="p-2 hover:bg-white/10 rounded-full transition-colors" 
                       title="View Project"
                     >
-                        {project.tags.includes('Web App') ? (
+                        {/* Always use Globe for web apps */}
+                        {(project.tags.includes('Web App') || project.tags.includes('Web Development')) ? (
                           <Globe className="w-5 h-5 text-slate-400 hover:text-white" />
                         ) : (
                           <ExternalLink className="w-5 h-5 text-slate-400 hover:text-white" />

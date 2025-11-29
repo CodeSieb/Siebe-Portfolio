@@ -3,11 +3,12 @@ import { motion } from 'framer-motion';
 import { Play, Terminal } from 'lucide-react';
 
 interface IntroProps {
-  onPlay: () => void;
+  onStart: () => void;
   onOpenTerminal: () => void;
+  onEnableHackerMode: () => void;
 }
 
-const Intro: React.FC<IntroProps> = ({ onPlay, onOpenTerminal }) => {
+const Intro: React.FC<IntroProps> = ({ onStart, onOpenTerminal, onEnableHackerMode }) => {
   return (
     <motion.div 
       className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-neon-bg text-white"
@@ -20,7 +21,9 @@ const Intro: React.FC<IntroProps> = ({ onPlay, onOpenTerminal }) => {
           initial={{ y: 100, opacity: 0, filter: "blur(10px)" }}
           animate={{ y: 0, opacity: 1, filter: "blur(0px)" }}
           transition={{ duration: 1.2, ease: "easeOut" }}
-          className="font-display text-8xl md:text-9xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white to-slate-400 drop-shadow-[0_0_15px_rgba(188,19,254,0.6)]"
+          onClick={onEnableHackerMode}
+          className="font-display text-8xl md:text-9xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white to-slate-400 drop-shadow-[0_0_15px_rgba(188,19,254,0.6)] cursor-pointer select-none active:scale-95 transition-transform"
+          title="???"
         >
           SIEBE
         </motion.h1>
@@ -36,7 +39,7 @@ const Intro: React.FC<IntroProps> = ({ onPlay, onOpenTerminal }) => {
 
         {/* Play Button */}
         <motion.button
-          onClick={onPlay}
+          onClick={onStart}
           initial={{ scale: 0, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ delay: 1.5, type: "spring", stiffness: 200, damping: 20 }}
@@ -46,7 +49,7 @@ const Intro: React.FC<IntroProps> = ({ onPlay, onOpenTerminal }) => {
         >
           <span className="relative z-10 flex items-center gap-3">
             <Play className="w-5 h-5 fill-current" />
-            Play
+            START
           </span>
           {/* Button slide effect */}
           <div className="absolute inset-0 bg-neon-cyan/20 transform -skew-x-12 -translate-x-full transition-transform duration-500 group-hover:translate-x-full" />
